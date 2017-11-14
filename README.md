@@ -23,3 +23,10 @@ git checkout -b <new branch name>
 git push -u origin <your branch name>
 ```
 5. When ready to combine the feature with the rest of the codebase, perform a Merge Request from your branch to the master branch
+
+## How to run
+install dependencies:
+ `$ cd app && npm install`
+
+run the app:
+`$ DEBUG=app:* npm start`
