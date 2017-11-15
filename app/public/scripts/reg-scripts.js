@@ -31,36 +31,41 @@ $(document).ready(function(){
   }
 
   function validInputs() {
+    var errors = "";
     if (!$("input#first_name").val().match(/[a-z]/i)) {
-      return false;
+      errors += "<li>Need a first name</li>";
     }
     if (!$("input#last_name").val().match(/[a-z]/i)) {
-      return false;
+      errors += "<li>Need a last name</li>";
     }
     if (!validateEmail($("input#email").val())) {
-      return false;
+      errors += "<li>Need an e-mail address</li>";
     }
     if ($("select#usertype").val() == "0") {
-      return false;
+      errors += "<li>Need to select if you are a student, teacher, or parent</li>";
     }
     if (!$("input#password").val().match(/[a-z]/i)) {
-      return false;
+      errors += "<li>Need a password</li>";
     }
     if ($("input#password_confirmation").val() != $("input#password").val()) {
-      return false;
+      errors += "<li>Passwords must match</li>";
     }
     if ($("select#usertype").val() == "3" && !validateEmail($("input#student_email").val())) {
+      errors += "<li>Need to enter in your student's e-mail</li>";
+    }
+    $("ul#errors").html(errors);
+    if (errors == "") {
+      return true;
+    }
+    else {
       return false;
     }
-    return true;
   }
 
   function onRegister() {
+    // TODO: This should POST to the backend
     if (validInputs()) {
       console.log("True");
-    }
-    else {
-      console.log("False");
     }
   }
   
