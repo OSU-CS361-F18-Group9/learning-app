@@ -28,5 +28,11 @@ git push -u origin <your branch name>
 install dependencies:
  `$ cd app && npm install`
 
+Modify the .env file with the correct credentials (do not include the brackets):
+```
+DB_USER=<USERNAME HERE>
+DB_PW=<PASSWORD HERE>
+```
+
 run the app:
 `$ DEBUG=app:* npm start`
