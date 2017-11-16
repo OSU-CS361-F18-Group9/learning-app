@@ -27,7 +27,7 @@ router.post('/login', function(req, res, next) {
       res.render('loginFail');
       return;
     } else {
-    res.render('loginSuccess');
+      res.render('loginSuccess');
       console.log("login successful");
       return;
       //TODO: make login success page. res.render...
