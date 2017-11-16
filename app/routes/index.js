@@ -16,6 +16,25 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+router.post('/login', function(req, res, next) {
+    mysql.pool.query("SELECT * from users WHERE email=? AND password=?
+                      VALUES (?, ?)",
+                      [req.body.email, req.body.password],
+                       function (error, result) {
+      if(error){
+        next(error);
+        //show error message?
+        return;
+      }
+    if (result.length != 1) {
+      next(error);
+      //make error page.
+      return;
+    } else {
+      //login success.
+    }
+});
+
 
 router.post('/register_new_user', function(req,res,next) {
   mysql.pool.query("SELECT * FROM users WHERE email=?",
