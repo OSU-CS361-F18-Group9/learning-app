@@ -17,7 +17,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-    mysql.pool.query("SELECT * from users WHERE email=? AND password=?
+    mysql.pool.query("SELECT * from users WHERE email=? AND password=? \
                       VALUES (?, ?)",
                       [req.body.email, req.body.password],
                        function (error, result) {
