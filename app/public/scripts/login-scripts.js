@@ -28,10 +28,10 @@ $(document).ready(function(){
       $.ajax({
         type: "POST",
         url: '/login',
-        data: $("#regForm").serialize(),
+        data: $("#LoginForm").serialize(),
       });
     }
   }
   
-  $("input#register").click(onLogin);
+  $("input#login").click(onLogin);
 });
