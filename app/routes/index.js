@@ -32,11 +32,16 @@ router.post('/login', function(req, res, next) {
       next(error);
       return;
     } else if (result.length != 1) {
+      //TODO: fix the redirects.
       console.log("no one by that login info");
-      return res.redirect('/loginFail');
+      return res.redirect('./loginFail');
     } else {
+      console.log(result);
       console.log("login successful");
-      return res.redirect('/loginSuccess');
+      return res.redirect('./loginSuccess');
+      //TODO: make session???
+      //TODO: send login information to dashboard?
+      //option: send info to front end, which will then redirect.
     }
   });
 });
