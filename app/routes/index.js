@@ -28,10 +28,13 @@ router.post('/login', function(req, res, next) {
       }
     if (result.length != 1) {
       next(error);
-      //make error page.
+      //TODO: make error page.
+      res.render(loginFail);
       return;
     } else {
-      //login success.
+      res.render(loginSuccess);
+      return;
+      //TODO: make login success page. res.render...
     }
 });
 
