@@ -63,9 +63,12 @@ $(document).ready(function(){
   }
 
   function onRegister() {
-    // TODO: This should POST to the backend
     if (validInputs()) {
-      console.log("True");
+      $.ajax({
+        type: "POST",
+        url: '/register_new_user',
+        data: $("#regForm").serialize(),
+      });
     }
   }
   
