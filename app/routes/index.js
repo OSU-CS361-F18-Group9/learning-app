@@ -17,25 +17,27 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-    mysql.pool.query("SELECT * from users WHERE email=? AND password=? \
+  mysql.pool.query("SELECT * FROM users WHERE email=? AND password=? \
                       VALUES (?, ?)",
                       [req.body.email, req.body.password],
                        function (error, result) {
-      if(error){
-        next(error);
-        //show error message?
-        return;
-      }
+    if(error){
+      next(error);
+      //show error message?
+      return;
+    }
+    
     if (result.length != 1) {
       next(error);
       //TODO: make error page.
       res.render(loginFail);
       return;
     } else {
-      res.render(loginSuccess);
+    res.render(loginSuccess);
       return;
       //TODO: make login success page. res.render...
     }
+  });
 });
 
 
