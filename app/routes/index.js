@@ -16,6 +16,14 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+router.get('/loginFail', function(req, res, next) {
+  res.render('loginFail');
+});
+
+router.get('/loginSuccess', function(req, res, next) {
+  res.render('loginSuccess');
+});
+
 router.post('/login', function(req, res, next) {
   mysql.pool.query("SELECT * FROM users WHERE email=? AND password=?",
                       [req.body.email, req.body.password],
@@ -25,13 +33,10 @@ router.post('/login', function(req, res, next) {
       return;
     } else if (result.length != 1) {
       console.log("no one by that login info");
-      res.render('loginFail');
-      return;
+      return res.redirect('/loginFail');
     } else {
-      res.render('loginSuccess');
       console.log("login successful");
-      return;
-      //TODO: make login success page. res.render...
+      return res.redirect('/loginSuccess');
     }
   });
 });
