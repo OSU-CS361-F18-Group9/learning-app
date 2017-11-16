@@ -20,10 +20,11 @@ router.post('/login', function(req, res, next) {
   mysql.pool.query("SELECT * FROM users WHERE email=? AND password=?",
                       [req.body.email, req.body.password],
                        function (error, result) {
-    if (error) {
+    if (error || result.length != 1) {
       next(error);
-      //TODO: make error page.
-      console.log(error);
+      return;
+    } else if (result.length != 1) {
+      console.log("no one by that login info");
       res.render('loginFail');
       return;
     } else {
