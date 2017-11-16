@@ -21,21 +21,14 @@ router.post('/login', function(req, res, next) {
                       VALUES (?, ?)",
                       [req.body.email, req.body.password],
                        function (error, result) {
-    if(error){
-      next(error);
-      //show error message?
-      console.log("error in selecting");
-      return;
-    }
-    
-    if (result.length != 1) {
+    if (error) {
       next(error);
       //TODO: make error page.
-      console.log("got to fail section");
-      res.render(loginFail);
+      console.log(error);
+      res.render('loginFail');
       return;
     } else {
-    res.render(loginSuccess);
+    res.render('loginSuccess');
       console.log("login successful");
       return;
       //TODO: make login success page. res.render...
