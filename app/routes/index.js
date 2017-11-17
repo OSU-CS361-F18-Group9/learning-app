@@ -11,6 +11,10 @@ router.get('/register', function(req, res, next) {
   res.render('register');
 });
 
+router.get('/register_successful', function(req, res, next) {
+  res.render('regSuccess');
+});
+
 router.post('/register_new_user', function(req,res,next) {
   mysql.pool.query("SELECT * FROM users WHERE email=?",
                   [req.body.email],
@@ -23,7 +27,7 @@ router.post('/register_new_user', function(req,res,next) {
     if (result.length > 0) {
       // E-mail address must be unique - do not allow registration if
       // e-mail is already in the database
-      next(error);
+      // TODO: Display some type of error
       return;
     }
 
@@ -31,13 +35,22 @@ router.post('/register_new_user', function(req,res,next) {
                       VALUES (?, ?, ?, ?, ?)",
                       [req.body.first_name, req.body.last_name,
                        req.body.email, req.body.password, parseInt(req.body.usertype)],
-                       function (error, result) {
-      if(error){
-        next(error);
+                       function (regError, regResult) {
+      if(regError){
+        next(regError);
         return;
       }
-      // FIXME: Why doesn't this show the registration page?
-      res.render("regSuccess");
+      
+      // Reference the following for explanation on redirection:
+      // http://bit.ly/2ANIB4x
+      var ajax = req.xhr;
+      if (ajax) {
+        res.json({'msg':'redirect','location':'/register_successful'});
+      }
+      else {
+        req.method = 'get';
+        res.redirect('/register_successful');
+      }
     });
   });
 });

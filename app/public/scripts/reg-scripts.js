@@ -63,11 +63,18 @@ $(document).ready(function(){
   }
 
   function onRegister() {
+    // Reference the following for explanation on redirection:
+    // http://bit.ly/2ANIB4x
     if (validInputs()) {
       $.ajax({
         type: "POST",
         url: '/register_new_user',
         data: $("#regForm").serialize(),
+        dataType: 'JSON'
+      }).success(function(data, textStatus, req) {
+        if(data.msg === "redirect") {
+          window.location = data.location;
+        }
       });
     }
   }
