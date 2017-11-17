@@ -15,6 +15,10 @@ router.get('/register_successful', function(req, res, next) {
   res.render('regSuccess');
 });
 
+router.get('/fail_user_exists', function(req, res, next) {
+  res.render('regFailUserExists');
+})
+
 router.post('/register_new_user', function(req,res,next) {
   mysql.pool.query("SELECT * FROM users WHERE email=?",
                   [req.body.email],
@@ -27,7 +31,14 @@ router.post('/register_new_user', function(req,res,next) {
     if (result.length > 0) {
       // E-mail address must be unique - do not allow registration if
       // e-mail is already in the database
-      // TODO: Display some type of error
+      let ajax = req.xhr;
+      if (ajax) {
+        res.json({'msg':'redirect','location':'/fail_user_exists'});
+      }
+      else {
+        req.method = 'get';
+        res.redirect('/fail_user_exists');
+      }
       return;
     }
 
@@ -40,10 +51,10 @@ router.post('/register_new_user', function(req,res,next) {
         next(regError);
         return;
       }
-      
+
       // Reference the following for explanation on redirection:
       // http://bit.ly/2ANIB4x
-      var ajax = req.xhr;
+      let ajax = req.xhr;
       if (ajax) {
         res.json({'msg':'redirect','location':'/register_successful'});
       }
