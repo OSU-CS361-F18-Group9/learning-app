@@ -68,7 +68,7 @@ $(document).ready(function(){
     if (validInputs()) {
       $.ajax({
         type: "POST",
-        url: '/register_new_user',
+        url: '/register/new_user',
         data: $("#regForm").serialize(),
         dataType: 'JSON'
       }).success(function(data, textStatus, req) {
