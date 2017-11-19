@@ -54,7 +54,7 @@ $(document).ready(function(){
       errors += "<li>Need to enter in your student's e-mail</li>";
     }
     $("ul#errors").html(errors);
-    if (errors == "") {
+    if (errors === "") {
       return true;
     }
     else {
