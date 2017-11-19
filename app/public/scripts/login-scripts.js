@@ -15,7 +15,7 @@ $(document).ready(function(){
     }
     
     $("ul#errors").html(errors);
-    if (errors == "") {
+    if (errors === "") {
       return true;
     }
     else {
@@ -29,6 +29,11 @@ $(document).ready(function(){
         type: "POST",
         url: '/login',
         data: $("#LoginForm").serialize(),
+        dataType: 'JSON'
+      }).success(function(data, textStatus, req) {
+        if(data.msg === "redirect") {
+          window.location = data.location;
+        }
       });
     }
   }
