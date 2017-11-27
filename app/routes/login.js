@@ -18,12 +18,13 @@ router.get('/fail', function(req, res, next) {
 router.get('/success', function(req, res, next) {
   var context = {"first_name": req.session.first_name,
                  "last_name": req.session.last_name,
+                 "sid": req.session.student_id,
                  "courses": req.session.courses};
   res.render('studentDashboard', context);
 });
 
 router.post('/', function(req, res, next) {
-  mysql.pool.query("SELECT first_name, last_name, completion, course_name FROM users u LEFT OUTER JOIN (SELECT sc.sid, completion, course_name FROM student_to_course sc INNER JOIN courses c ON c.id = sc.cid) as t2 ON t2.sid = u.id WHERE email=? AND password=?",
+  mysql.pool.query("SELECT first_name, last_name, u.id as student_id, completion, course_name, cid as course_id FROM users u LEFT OUTER JOIN (SELECT sc.sid, completion, course_name, cid FROM student_to_course sc INNER JOIN courses c ON c.id = sc.cid) as t2 ON t2.sid = u.id WHERE email=? AND password=?",
                       [req.body.email, req.body.password],
                        function (error, result) {
     if (error) {
@@ -43,6 +44,7 @@ router.post('/', function(req, res, next) {
       req.session.user = req.body.email;
       req.session.first_name = result[0].first_name;
       req.session.last_name = result[0].last_name;
+      req.session.student_id = result[0].student_id;
       req.session.courses = result;
       console.log(result);
       let ajax = req.xhr;
@@ -60,8 +62,6 @@ router.post('/', function(req, res, next) {
     }
   });
 });
-
-
 
 
 module.exports = router;
