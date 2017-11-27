@@ -49,7 +49,6 @@ router.post('/', function(req, res, next) {
       console.log(result);
       let ajax = req.xhr;
       if (ajax) {
-        // res.json({'msg':'redirect','location':'/login/success'});
         res.json({
           'msg': 'redirect', 
           'location': '/login/success', 
