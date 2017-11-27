@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var register = require('./routes/register');
@@ -19,6 +20,9 @@ app.set('view engine', 'hbs');
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist'));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/popper', express.static(__dirname + '/node_modules/popper.js/dist/umd'));
+app.use(session({secret: "password",
+                 saveUninitialized: false,
+                 resave: false}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
