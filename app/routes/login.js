@@ -15,7 +15,7 @@ router.get('/success', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  mysql.pool.query("SELECT * FROM users WHERE email=? AND password=?",
+  mysql.pool.query("SELECT first_name, last_name, completion, course_name FROM users u INNER JOIN student_to_course sc ON u.id = sc.sid INNER JOIN courses c ON c.id = sc.cid WHERE email=? AND password=?",
                       [req.body.email, req.body.password],
                        function (error, result) {
     if (error) {
@@ -37,6 +37,7 @@ router.post('/', function(req, res, next) {
       let ajax = req.xhr;
       if (ajax) {
         res.json({'msg':'redirect','location':'/login/success'});
+        // res.json({'msg': 'redirect', 'location': '/dashboard', 'fname': result.first_name, 'lname': result.last_name, 'classes': classes});
       }
       else {
         req.method = 'get';
@@ -48,6 +49,8 @@ router.post('/', function(req, res, next) {
     }
   });
 });
+
+
 
 
 module.exports = router;
