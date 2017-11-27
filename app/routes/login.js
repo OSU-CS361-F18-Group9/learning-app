@@ -3,7 +3,12 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.render('login');
+  if (!req.session.user){
+    res.render('login');
+  }
+  else {
+    res.render('alreadyLoggedIn');
+  }
 });
 
 router.get('/fail', function(req, res, next) {
@@ -11,17 +16,21 @@ router.get('/fail', function(req, res, next) {
 });
 
 router.get('/success', function(req, res, next) {
-  res.render('loginSuccess');
+  var context = {"first_name": req.session.first_name,
+                 "last_name": req.session.last_name,
+                 "sid": req.session.student_id,
+                 "courses": req.session.courses};
+  res.render('studentDashboard', context);
 });
 
 router.post('/', function(req, res, next) {
-  mysql.pool.query("SELECT * FROM users WHERE email=? AND password=?",
+  mysql.pool.query("SELECT first_name, last_name, u.id as student_id, completion, course_name, cid as course_id FROM users u LEFT OUTER JOIN (SELECT sc.sid, completion, course_name, cid FROM student_to_course sc INNER JOIN courses c ON c.id = sc.cid) as t2 ON t2.sid = u.id WHERE email=? AND password=?",
                       [req.body.email, req.body.password],
                        function (error, result) {
     if (error) {
       next(error);
       return;
-    } else if (result.length != 1) {
+    } else if (result.length < 1) {
       console.log("no one by that login info");
       let ajax = req.xhr;
       if (ajax) {
@@ -32,19 +41,24 @@ router.post('/', function(req, res, next) {
         res.redirect('/login/fail');
       }
     } else {
+      req.session.user = req.body.email;
+      req.session.first_name = result[0].first_name;
+      req.session.last_name = result[0].last_name;
+      req.session.student_id = result[0].student_id;
+      req.session.courses = result;
       console.log(result);
-      console.log("login successful");
       let ajax = req.xhr;
       if (ajax) {
-        res.json({'msg':'redirect','location':'/login/success'});
+        // res.json({'msg':'redirect','location':'/login/success'});
+        res.json({
+          'msg': 'redirect', 
+          'location': '/login/success', 
+        });
       }
       else {
         req.method = 'get';
         res.redirect('/login/success');
       }
-      //TODO: make session???
-      //TODO: send login information to dashboard?
-      //option: send info to front end, which will then redirect.
     }
   });
 });
