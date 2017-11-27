@@ -13,6 +13,10 @@ $(document).ready(function(){
     if (!$("input#password").val().match(/[a-z]/i)) {
       errors += "<li>Need a password</li>";
     }
+
+    if ($("select#usertype").val() == "0") {
+      errors += "<li>Need to select if you are a student, teacher, or parent</li>";
+    }
     
     $("ul#errors").html(errors);
     if (errors === "") {
