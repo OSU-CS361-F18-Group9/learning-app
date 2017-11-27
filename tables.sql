@@ -35,3 +35,10 @@ CREATE TABLE parents (
     PRIMARY KEY (`id`),
     CONSTRAINT UNIQUE(email, password)
 ) ENGINE=INNODB;
+
+CREATE TABLE student_to_teacher(
+    `sid` int(11) NOT NULL,
+    `tid` int(11) NOT NULL,
+    CONSTRAINT `sid_stt` FOREIGN KEY (`sid`) REFERENCES users(`id`) ON DELETE CASCADE,
+    CONSTRAINT `tid_stt` FOREIGN KEY (`tid`) REFERENCES users(`id`) ON DELETE CASCADE
+) ENGINE=INNODB;
