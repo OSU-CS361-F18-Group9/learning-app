@@ -9,6 +9,7 @@ var session = require('express-session');
 var index = require('./routes/index');
 var register = require('./routes/register');
 var login = require('./routes/login');
+var logoff = require('./routes/logoff');
 var users = require('./routes/users');
 
 var app = express();
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/register', register);
 app.use('/login', login);
+app.use('/logoff', logoff);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
@@ -51,6 +53,9 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
+  if (req.session.user) {
+    req.session.destroy();
+  }
   res.status(err.status || 500);
   res.render('error');
 });
