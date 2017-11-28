@@ -1,0 +1,16 @@
+<h1>Hello, {{this.first_name}} {{this.last_name}}!</h1>
+<h2>Students:</h2>
+{{#each students}}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>{{this.first_name}} {{this.last_name}}</h3>
+  </div>
+  {{#each courses}}
+  <div class="panel-body">
+    Class: {{this.course_name}}
+    <br>
+    Completion: {{this.completion}}
+  </div>
+  {{/each}}
+</div>
+{{/each}}
